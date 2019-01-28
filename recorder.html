@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="recorder.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div class="header">Programming Test 
+    <div class="sub-header">Ranindra Muda Kusuma</div></div>
+        <div class="container">
+            <input onclick="startRecording()" type="button" value="record" class="button-rec"/>
+            <p><input onclick="stopRecording()" type="button" value="stop" class="button-1"/>
+            <div class="reclist" id="recordingslist"></div>
+        </div>
+        
+
+    <script>
+        var recorder;
+        var audio = document.querySelector('audio');
+        function startRecording() {
+            HZRecorder.get(function (rec) {
+                recorder = rec;
+                recorder.start();
+            });
+        }
+        function stopRecording() {
+            recorder.stop();
+            var blob = recorder.getBlob();
+            var url = URL.createObjectURL(blob);
+            var div = document.createElement('div');
+            var au = document.createElement('audio');
+            var li = document.createElement('li');
+            var hf = document.createElement('a');
+            au.controls = true;
+            au.src = url;
+            hf.href = url;
+            hf.download = new Date().toISOString() + '.wav';
+            hf.innerHTML = "<p>download";
+            div.appendChild(au);
+            div.appendChild(hf);
+            recordingslist.appendChild(div);
+
+
+        }
+        function playRecording() {
+            recorder.play(audio);
+        }
+
+        function uploadAudio() {
+            
+            //
+            recorder.upload("sample_1.php", function (state, e) {
+                switch (state) {
+                    case 'uploading':
+                        //var percentComplete = Math.round(e.loaded * 100 / e.total) + '%';
+                        break;
+                    case 'ok':
+                        //alert(e.target.responseText);
+                        alert("");
+                        break;
+                    case 'error':
+                        alert("");
+                        break;
+                    case 'cancel':
+                        alert("");
+                        break;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
